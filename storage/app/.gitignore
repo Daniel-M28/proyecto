@@ -1,4 +1,9 @@
+# Excluir todo
 *
+
+# Incluir carpetas específicas
 !public/
 !pdfs/
+
+# Excluir archivos específicos
 !.gitignore
