@@ -75,5 +75,5 @@ Route::group(['middleware' => 'auth'], function () {
     // Redirige a la página de inicio después de iniciar sesión
     Route::get('/', function () {
         return view('inicio');
-    })->name('home');
+    })->name('inicio');
 });
