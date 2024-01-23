@@ -29,10 +29,10 @@ class AddUserIdToCitas extends Migration
      * @return void
      */
     public function down()
-    { /*
+    { 
         Schema::table('citas', function (Blueprint $table) {
             $table->dropForeign(['user_id']);
             $table->dropColumn('user_id');
-        }); */
+        }); 
     } 
 }

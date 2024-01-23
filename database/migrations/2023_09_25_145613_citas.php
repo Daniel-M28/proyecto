@@ -10,7 +10,7 @@ return new class extends Migration
      * Run the migrations.
      */
     public function up(): void
-    { /*
+    { 
         
         Schema::create('citas', function (Blueprint $table) {
             $table->bigIncrements('id');
@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('cedula');
             $table->date('fecha');
             $table->timestamps();
-        }); */
+        }); 
     }
 
     /**
