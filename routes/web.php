@@ -47,6 +47,11 @@ Route::get('/pqrs', function () {
     return view('pqrs');
 })->name('pqrs')->middleware('auth');;
 
+Route::get('/mapa', function () {
+    return view('mapa');
+})->name('mapa')->middleware('auth');;
+
+
 
 
 

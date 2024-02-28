@@ -11,30 +11,30 @@ const total = document.querySelector("#precio-total")
 
 
 
+
 function generarFactura(productosEnCarrito) {
-  // Genera un ID único para la factura usando el timestamp actual
-  const idFactura = new Date().getTime();
+// Genera un ID único para la factura usando el timestamp actual
+const idFactura = new Date().getTime();
 
-  // Obtiene la fecha actual
-  const fechaActual = new Date();
+// Obtiene la fecha actual
+const fechaActual = new Date();
 
-  // Formatea la fecha 
-  const fechaFormateada = `${fechaActual.getDate()}/${fechaActual.getMonth() + 1}/${fechaActual.getFullYear()} ${fechaActual.getHours()}:${fechaActual.getMinutes()}`;
+// Formatea la fecha 
+const fechaFormateada = `${fechaActual.getDate()}/${fechaActual.getMonth() + 1}/${fechaActual.getFullYear()} ${fechaActual.getHours()}:${fechaActual.getMinutes()}`;
 
-  let factura = `<div style='color:#48e;text-align:center;'> <img src='logo-farmacia.png' style='height:60px; width:80px; margin-left:-50px;'> === Factura === <br>`;
-  factura += `<div style='color: black; text-align: center;'>ID Factura: ${idFactura}</div>`;
-  factura += `<div style='color: black; text-align: center;'>Fecha: ${fechaFormateada}</div><br>`;
-  factura += `<div style='text-align:center;'><hr style='border: 1px solid black;'></div><br>`;
-
-  let total = 0;
-
-  productosEnCarrito.forEach((producto, index) => {
+let factura = `<div style='color:#48e;text-align:center;'> <img src='logo-farmacia.png' style='height:60px; width:80px; margin-left:-50px;'> === Factura === <br>`;
+factura += `<div style='color: black; text-align: center;'>ID Factura: ${idFactura}</div>`;
+factura += `<div style='color: black; text-align: center;'>Fecha: ${fechaFormateada}</div><br>`;
+factura += `<div style='text-align:center;'><hr style='border: 1px solid black;'></div><br>`
+let total = 0
+productosEnCarrito.forEach((producto, index) => {
     factura += `<div style='color:black; text-align:start;'> <br><br> Producto: <div style='color:black; text-align:end;'> ${producto.titulo}\n`;
     factura += `<div style='color:black; text-align:start;'> Cantidad:  <div style='text-align:end;'>${producto.cantidad}\n`;
     factura += `<div style='color:black; text-align:start;'> Precio unitario:  <div style='text-align:end;'>${producto.precio}\n`;
     factura += `<div style='color:black; text-align:start;'> Subtotal:  <div style='text-align:end;'> ${producto.precio * producto.cantidad}\n\n`;
+    factura += `<div style='color:black; text-align:start;'> Envío:  <div style='text-align:end;'> ${shippingCost}\n\n`;
 
-    total += producto.precio * producto.cantidad;
+    total += producto.precio * producto.cantidad + parseInt(shippingCost) ;
 
     // Agrega una línea de separación después de cada producto, excepto el último
     if (index < productosEnCarrito.length - 1) {
@@ -164,7 +164,7 @@ cargarProductosCarrito();
     }
 
 function actualizarTotal(){
-   const totalCalculado = productosEnCarrito.reduce((acc, producto)=> acc + (producto.precio * producto.cantidad),0);
+   const totalCalculado = productosEnCarrito.reduce((acc, producto)=> acc + (producto.precio * producto.cantidad ),0) ;
 total.textContent = `Total:$ ${totalCalculado}`;
 
 }
@@ -178,3 +178,9 @@ contenedorCarritoVacio.classList.add("disabled");
 contenedorCarritoProductos.classList.add("disabled");
 contenedorCarritoBotones.classList.add ("disabled");
 contenedorCarritoCompra.classList.remove("disabled");}
+
+
+var shippingCost = localStorage.getItem('shippingCost');
+
+
+

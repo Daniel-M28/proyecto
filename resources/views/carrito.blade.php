@@ -42,10 +42,17 @@
          <button id="vaciar-carrito" class="vaciar-carrito btn btn-danger">vaciar carrito</button>
          
      </div>
+     
+
             <div class="botones-derecha">
-                 <div class="total-carrito"> <p id="precio-total" class="precio-total"> Total $3.000</p>
-           </div>
-                  <button id="boton-comprar-carrito" class="boton-comprar-carrito btn btn-success">comprar ahora</button></div>
+           
+                 <div class="total-carrito"> <p id="precio-total" class="precio-total"> Total $0</p></div>
+
+                 <div> <a  href="{{asset('mapa')}}"> <button style="margin-top:20px; margin-left:-70px " class="btn btn-success "> envío </button> </a> </div>
+        
+         <div><button id="boton-comprar-carrito" class="boton-comprar-carrito btn btn-success">comprar ahora</button></div>
+                  
+               
  
  
          </div>
