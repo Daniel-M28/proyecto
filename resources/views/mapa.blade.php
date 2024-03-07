@@ -19,7 +19,7 @@
 <a href="{{ asset('carrito') }}"><button style="margin-left:230px; margin-top:50px " class="btn btn-success">ir a pagar </button> </a>
 
 <p style=" margin-left: 400px; color: #48e;margin-top: -50px">Envio</p> <br> <p style="margin-left: 400px; margin-top: -30px">Ingresa tu dirección o seleccionala en el mapa <br>
-cada kilometro desde la tienda tiene un valor de $2000 <br>
+cada kilometro desde la tienda tiene un valor de $3000 <br>
 El valor estimado del envío aparecerá en la parte inferior del mapa</p>
 
 <div id="map"></div>
