@@ -227,14 +227,13 @@ list-style: none;
       font-size: 18px;}
         
     .carro-compra{position: absolute;
-      width: 450px;
-        margin-top: 2px;
+        margin-top: -120px;
         margin-left: 50px;
         font-size: 15px;
         box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
         border: 1px solid #f0f0f0;
         display: flex;
-        max-height: 300px; 
+        max-height: 800px; 
         overflow: auto;
         flex-direction:column;
         gap: 5px;
@@ -376,3 +375,4 @@ margin-left: 40px;}
       
     
   .contenedor-formulario-citas{margin-left: 250px;}
+

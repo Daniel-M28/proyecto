@@ -17,7 +17,7 @@
 
 <div id="titulo2-carrito" class="titulo2-carrito "> <h2 class="titulo-compra-carro"></h2> 
 
-<p class="carro-compra">  <i class="fa-regular fa-face-laugh-beam"></i></p> 
+<p class="carro-compra" style="margin: auto;height: 500px; width: 600px">  <i class="fa-regular fa-face-laugh-beam"></i></p> 
 
 </div>
 

@@ -26,24 +26,35 @@ let factura = `<div style='color:#48e;text-align:center;'> <img src='logo-farmac
 factura += `<div style='color: black; text-align: center;'>ID Factura: ${idFactura}</div>`;
 factura += `<div style='color: black; text-align: center;'>Fecha: ${fechaFormateada}</div><br>`;
 factura += `<div style='text-align:center;'><hr style='border: 1px solid black;'></div><br>`
-let total = 0
+let total = 0;
+let shippingCostAdded = false;
+
 productosEnCarrito.forEach((producto, index) => {
     factura += `<div style='color:black; text-align:start;'> <br><br> Producto: <div style='color:black; text-align:end;'> ${producto.titulo}\n`;
     factura += `<div style='color:black; text-align:start;'> Cantidad:  <div style='text-align:end;'>${producto.cantidad}\n`;
     factura += `<div style='color:black; text-align:start;'> Precio unitario:  <div style='text-align:end;'>${producto.precio}\n`;
     factura += `<div style='color:black; text-align:start;'> Subtotal:  <div style='text-align:end;'> ${producto.precio * producto.cantidad}\n\n`;
-    factura += `<div style='color:black; text-align:start;'> Envío:  <div style='text-align:end;'> ${shippingCost}\n\n`;
 
-    total += producto.precio * producto.cantidad + parseInt(shippingCost) ;
+    total += producto.precio * producto.cantidad;
 
     // Agrega una línea de separación después de cada producto, excepto el último
     if (index < productosEnCarrito.length - 1) {
       factura += `<div style='text-align:center;'><hr style='border: 1px solid black;'></div><br>`;
+    } else {
+      // Agrega el costo de envío solo una vez al final
+      if (!shippingCostAdded) {
+        factura += `<div style='color:black; text-align:start;'> Envío:  <div style='text-align:end;'> ${shippingCost}\n\n`;
+        shippingCostAdded = true;
+      }
     }
-  });
+});
+
+// Agrega el total al final de la factura
+factura += `<div style='color:black; text-align:start;'> Total:  <div style='text-align:end;'> ${total}\n\n`;
+
 
   factura += `<div style='text-align:center;'><hr style='border: 1px solid black;'></div><br>`;
-  factura += `<div style='color:#48e; text-align:center;'><br><br>Total: $${total}\n\n<br><br>¡Gracias por tu compra!</div>`;
+  factura += `<div style='color:#48e; text-align:center;'><br><br>Total: $${total + parseInt(shippingCost)}\n\n<br><br>¡Gracias por tu compra!</div>`;
 
   // Actualiza el contenido del elemento HTML con la factura
   const elementoCarroCompra = document.querySelector(".carro-compra");
@@ -58,15 +69,15 @@ const botonComprar = document.querySelector("#boton-comprar-carrito")
 
 
 botonComprar.addEventListener("click", () => {
-   
-    generarFactura(productosEnCarrito);
   
-    //  limpia el carrito y actualiza la interfaz
-    productosEnCarrito.length = 0;
-    localStorage.setItem("productos-en-carrito", JSON.stringify(productosEnCarrito));
-    cargarProductosCarrito();
-  });
-  
+  // Resto del código para generar la factura y enviarla al servidor
+  generarFactura(productosEnCarrito);
+  // Limpia el carrito y actualiza la interfaz
+  productosEnCarrito.length = 0;
+  localStorage.setItem("productos-en-carrito", JSON.stringify(productosEnCarrito));
+  cargarProductosCarrito();
+});
+
 
 
 function cargarProductosCarrito(){
@@ -181,6 +192,5 @@ contenedorCarritoCompra.classList.remove("disabled");}
 
 
 var shippingCost = localStorage.getItem('shippingCost');
-
 
 
