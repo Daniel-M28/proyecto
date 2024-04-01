@@ -143,9 +143,22 @@
 
         <main class="py-4 contenido-plantilla">
         @yield('content')
-        </main>
 
-       
+      
+        </main>
+        @if (!isset($ocultarFooter) || !$ocultarFooter)
+
+        <footer class=" text-white text-center py-3" style="position: fixed;
+        bottom: 0;
+        width: 100%;
+        background-color: rgba(68, 136, 238, 0.9);
+        color: white;
+        text-align: center;
+        padding: 10px 0;
+        margin-bottom: -20px;"
+        >
+            <p>Farmacia Zeus | Teléfono: 3017690988 | Correo: farmaciazeus@hotmail.com | Horario: Lunes a sábado 9 am a 6 pm</p>
+        </footer>    @endif
         </div>
 
         <script>
@@ -162,9 +175,10 @@ function equalizeHeight() {
 
 equalizeHeight();
 window.addEventListener('resize', equalizeHeight);
+
 </script>
 
-    
+
 
     </div>
 
@@ -180,9 +194,10 @@ window.addEventListener('resize', equalizeHeight);
             </nav>
         </div>
 
+
+        
       
 </body>
- 
 
 
 </html>

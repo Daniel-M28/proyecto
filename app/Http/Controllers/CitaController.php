@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Cita;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Carbon;
 
 
 /**
@@ -25,10 +26,10 @@ class CitaController extends Controller
 
        // Verificar el rol del usuario
        if ($user->hasRole('admin')) {
-           // Si es administrador, mostrar todas las citas
+     // Si es administrador, mostrar todas las citas
            $citas = Cita::paginate();
        } else {
-           // Si es usuario, mostrar solo sus propias citas
+        // Si es usuario, mostrar solo sus propias citas
            $citas = Cita::where('user_id', $user->id)->paginate();
        }
 
@@ -43,8 +44,16 @@ class CitaController extends Controller
      */
     public function create()
     {
+        $user = Auth::user();
+        $nombreUsuario = $user->name;
+    
+       // Obtener citas ocupadas
+       $citasOcupadas = Cita::pluck('fecha')->toArray();
+    
+       
         $cita = new Cita();
-        return view('cita.create', compact('cita'));
+    
+        return view('cita.create', compact('cita', 'nombreUsuario', 'citasOcupadas'));
     }
 
     /**
@@ -55,14 +64,43 @@ class CitaController extends Controller
      */
     public function store(Request $request)
     {
-        request()->validate(Cita::$rules);
+    // Validación de campos
+    $request->validate([
+        'nombre' => 'required',
+        'cedula' => 'required',
+        'fecha' => 'required|date_format:Y-m-d\TH:i', // Ajusta el formato de fecha y hora
+    ]);
 
-    $cita = new Cita($request->all());
-    $cita->user_id = Auth::id(); // Asigna el ID del usuario autenticado
+    // Obtener la fecha y hora de la nueva cita
+    $fecha_cita = Carbon::createFromFormat('Y-m-d\TH:i', $request->input('fecha'));
+
+    // Verificar el límite de citas por día para el usuario actual (2)
+    $user = Auth::user();
+    $cantidad_citas_hoy = Cita::where('user_id', $user->id)
+                                ->whereDate('fecha', now()->toDateString())
+                                ->count();
+
+    // Verificar si el usuario ha alcanzado el límite de citas por día
+    if ($cantidad_citas_hoy >= 2) {
+        return redirect()->back()->withErrors(['fecha' => 'Has alcanzado el límite de citas por día.'])->withInput();
+    }
+
+    // Verificar que no haya otra cita programada en la misma hora
+    $cita_existente = Cita::where('fecha', $fecha_cita)->exists();
+
+    if ($cita_existente) {
+        return redirect()->back()->withErrors(['fecha' => 'Ya hay una cita programada en esa hora.'])->withInput();
+    }
+
+    // Crear la nueva cita
+    $cita = new Cita();
+    $cita->nombre = $request->input('nombre');
+    $cita->cedula = $request->input('cedula');
+    $cita->fecha = $fecha_cita;
+    $cita->user_id = Auth::id(); 
     $cita->save();
 
-    return redirect()->route('citas.index')
-        ->with('success', 'Cita creada con éxito');
+    return redirect()->route('citas.index')->with('success', 'Cita creada con éxito');
 }
 
     /**
@@ -87,8 +125,13 @@ class CitaController extends Controller
     public function edit($id)
     {
         $cita = Cita::find($id);
+        $user = Auth::user();
+        $nombreUsuario = $user->name;
 
-        return view('cita.edit', compact('cita'));
+        // Obtener citas ocupadas
+        $citasOcupadas = Cita::pluck('fecha')->toArray();
+
+        return view('cita.edit', compact('cita', 'nombreUsuario', 'citasOcupadas'));
     }
 
     /**

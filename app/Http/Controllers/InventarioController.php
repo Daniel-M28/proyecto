@@ -4,18 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Inventario;
 use Illuminate\Http\Request;
+use App\Models\Producto;
 
-/**
- * Class InventarioController
- * @package App\Http\Controllers
- */
 class InventarioController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         $inventarios = Inventario::paginate();
@@ -24,39 +16,44 @@ class InventarioController extends Controller
             ->with('i', (request()->input('page', 1) - 1) * $inventarios->perPage());
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         $inventario = new Inventario();
-        return view('inventario.create', compact('inventario'));
+        $productos = Producto::all();
+
+        return view('inventario.create', compact('inventario', 'productos'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        request()->validate(Inventario::$rules);
+        $request->validate([
+            'producto_id' => 'required',
+            'existencias' => 'required',
+            'entradas' => 'required',
+            'salidas' => 'required',
+        ]);
 
-        $inventario = Inventario::create($request->all());
+        $productoExistente = Inventario::where('producto_id', $request->input('producto_id'))->exists();
+        if ($productoExistente) {
+            return redirect()->back()->with('error', 'El producto ya existe en el inventario');
+        }
+
+        $inventario = new Inventario();
+        $inventario->producto_id = $request->input('producto_id');
+        $inventario->existencias = $request->input('existencias');
+        $inventario->entradas = $request->input('entradas');
+        $inventario->salidas = $request->input('salidas');
+        $inventario->save();
+
+        // Actualizar las existencias del producto
+        $producto = Producto::find($inventario->producto_id);
+        $producto->existencias = $inventario->existencias;
+        $producto->save();
 
         return redirect()->route('inventario.index')
-            ->with('success', 'Producto agregado con exito');
+            ->with('success', 'Producto agregado al inventario con éxito');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         $inventario = Inventario::find($id);
@@ -64,46 +61,57 @@ class InventarioController extends Controller
         return view('inventario.show', compact('inventario'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         $inventario = Inventario::find($id);
+        $productos = Producto::all();
 
-        return view('inventario.edit', compact('inventario'));
+        return view('inventario.edit', compact('inventario', 'productos'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @param  Inventario $inventario
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, Inventario $inventario)
     {
-        request()->validate(Inventario::$rules);
+        $request->validate([
+            'producto_id' => 'required',
+            'existencias' => 'required',
+            'entradas' => 'required',
+            'salidas' => 'required',
+        ]);
 
-        $inventario->update($request->all());
+        $inventario->update([
+            'producto_id' => $request->input('producto_id'),
+            'existencias' => $request->input('existencias'),
+            'entradas' => $request->input('entradas'),
+            'salidas' => $request->input('salidas'),
+        ]);
+
+        // Actualizar las existencias del producto
+        $producto = Producto::find($inventario->producto_id);
+        $producto->existencias = $inventario->existencias;
+        $producto->save();
 
         return redirect()->route('inventario.index')
-            ->with('success', 'Producto actualizado con exito');
+            ->with('success', 'Producto actualizado con éxito');
     }
 
-    /**
-     * @param int $id
-     * @return \Illuminate\Http\RedirectResponse
-     * @throws \Exception
-     */
+
     public function destroy($id)
     {
-        $inventario= Inventario::find($id)->delete();
+        $inventario = Inventario::find($id);
+        $inventario->delete();
 
         return redirect()->route('inventario.index')
-            ->with('success', 'Producto eliminado con exito');
+            ->with('success', 'Producto eliminado con éxito');
     }
+
+    public function getExistencias(Request $request)
+{
+    $idsProductos = $request->input('ids', []);
+
+    $existencias = Producto::whereIn('id', $idsProductos)->pluck('existencias', 'id');
+
+    return response()->json($existencias);
+}
+
+
 }

@@ -3,95 +3,94 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Gate;
-
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use App\Models\User;
 
 class PdfController extends Controller
 {
+    public function showForm()
+    {
+    $user = Auth::user();
+
+    $pdfFiles = $this->getUserPdfs($user);
+    $users = User::all();
+    $isAdmin = $user->roles()->where('name', 'admin')->exists();
+
+    if ($isAdmin) {
+        $pdfFiles = Storage::files('pdfs');
+    }
+    return view('pdf.form', compact('pdfFiles', 'users', 'isAdmin'));
+    }
+
+    public function uploadPdf(Request $request)
+    {
+        
+    Gate::authorize('cargar-pdf');
+
+    $request->validate([
+        'pdf' => 'required|mimes:pdf|max:10240',
+        'user_id' => 'required|exists:users,id',
+    ]);
+
+   
+    $targetUserId = $request->user_id;
+
     
-        public function showForm()
-        { 
-            // Verificar permiso para ver la página de carga de PDF
-            /*Gate::authorize('cargar-pdf');*/
+    $filename = 'pdf_usuario_' . $targetUserId . '_' . time() . '.' . $request->file('pdf')->getClientOriginalExtension();
+
+   
+    $pdfPath = $request->file('pdf')->storeAs('pdfs', $filename);
+
+    return redirect('/cargar-pdf')->with('pdfPath', $pdfPath);
+    }
+
+    private function getUserPdfs($user)
+    {
+       
+    $files = Storage::files('pdfs');
+
     
-            $pdfFiles = $this->pdfFiles();
-            return view('pdf.form', compact('pdfFiles'));
+    $userFiles = [];
+    foreach ($files as $file) {
+        
+        if (strpos($file, 'pdf_usuario_' . $user->id . '_') !== false) {
+            $userFiles[] = $file;
         }
-    
-        public function uploadPdf(Request $request)
-        {
-            // Verificar permiso para cargar PDF
-            Gate::authorize('cargar-pdf');
-    
-            $request->validate([
-                'pdf' => 'required|mimes:pdf|max:10240',
-            ]);
-    
-            $originalName = $request->file('pdf')->getClientOriginalName();
-            $filename = Str::slug(pathinfo($originalName, PATHINFO_FILENAME)) . '.' . $request->file('pdf')->getClientOriginalExtension();
-    
-            $pdfPath = $request->file('pdf')->storeAs('pdfs', $filename);
-    
-            return redirect('/cargar-pdf')->with('pdfPath', $pdfPath);
+    }
+
+    return $userFiles;
+    }
+
+    public function deletePdf($filename)
+    {
+      
+        Gate::authorize('eliminar-pdf');
+
+        $filepath = storage_path("app/pdfs/{$filename}");
+
+        if (file_exists($filepath)) {
+            Storage::delete("pdfs/{$filename}");
+            return redirect('/cargar-pdf')->with('success', 'Archivo eliminado correctamente');
+        } else {
+            return redirect('/cargar-pdf')->with('error', 'Archivo no encontrado');
         }
-    
-        public function downloadPdf($filename)
-        {
-            // Verificar permiso para descargar PDF
-           /* Gate::authorize('descargar-pdf');*/
-    
-            $filepath = storage_path("app/pdfs/{$filename}");
-    
-            if (file_exists($filepath)) {
-                return response()->download($filepath, $filename);
-            } else {
-                return response()->json(['error' => 'Archivo no encontrado'], 404);
-            }
-        }
-    
-        public function viewPdf($filename)
-        {
-            // Verificar permiso para ver PDF
-          /*  Gate::authorize('ver-pdf');*/
-    
-            $filepath = storage_path("app/pdfs/{$filename}");
-    
-            if (file_exists($filepath)) {
-                return response()->file($filepath);
-            } else {
-                return response()->json(['error' => 'Archivo no encontrado'], 404);
-            }
-        }
-    
-        public function deletePdf($filename)
-        {
-            // Verificar permiso para eliminar PDF
-            Gate::authorize('eliminar-pdf');
-    
-            $filepath = storage_path("app/pdfs/{$filename}");
-    
-            if (file_exists($filepath)) {
-                Storage::delete("pdfs/{$filename}");
-                return redirect('/cargar-pdf')->with('success', 'Archivo eliminado correctamente');
-            } else {
-                return redirect('/cargar-pdf')->with('error', 'Archivo no encontrado');
-            }
-        }
-    
-        private function pdfFiles()
-        {
-            $files = [];
-            $pdfPath = storage_path('app/pdfs');
-    
-            foreach (Storage::files('pdfs') as $file) {
-                $files[] = [
-                    'filename' => basename($file),
-                    'name' => pathinfo($file, PATHINFO_FILENAME),
-                ];
-            }
-    
-            return $files;
-        }
+    }
+
+    public function viewPdf($filename)
+{
+    $filepath = storage_path("app/pdfs/{$filename}");
+
+    if (file_exists($filepath)) {
+        return response()->file($filepath);
+    } else {
+       
+        error_log("El archivo PDF '{$filename}' no se encontró en la ubicación '{$filepath}'.");
+
+        
+        return response()->json(['error' => 'Archivo no encontrado'], 404);
+    }
+}
+
 }

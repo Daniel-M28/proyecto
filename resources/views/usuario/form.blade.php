@@ -12,16 +12,11 @@
             {!! $errors->first('CorreoElectronico', '<div class="invalid-feedback">El Correo Electronico es requerido</div>') !!}
         </div>
         <div class="form-group">
-            {{ Form::label('Telefono') }}
-            {{ Form::text('Telefono', $usuario->Telefono, ['class' => 'form-control' . ($errors->has('Telefono') ? ' is-invalid' : ''), 'placeholder' => 'Telefono']) }}
-            {!! $errors->first('Telefono', '<div class="invalid-feedback">El Telefono es requerido</div>') !!}
-        </div>
-        <div class="form-group">
-            {{ Form::label('Direccion') }}
-            {{ Form::text('Direccion', $usuario->Direccion, ['class' => 'form-control' . ($errors->has('Direccion') ? ' is-invalid' : ''), 'placeholder' => 'Direccion']) }}
-            {!! $errors->first('Direccion', '<div class="invalid-feedback">La Direccion es requerida</div>') !!}
-        </div>
-
+    {{ Form::label('Telefono') }}
+    {{ Form::text('Telefono', $usuario->Telefono, ['class' => 'form-control' . ($errors->has('Telefono') ? ' is-invalid' : ''), 'placeholder' => 'Telefono', 'maxlength' => '15', 'required']) }}
+    {!! $errors->first('Telefono', '<div class="invalid-feedback">:message</div>') !!}
+</div>
+        
     </div>
     <div class="box-footer mt20">
         <button type="submit" class="btn btn-success">{{ __('Registrar') }}</button>

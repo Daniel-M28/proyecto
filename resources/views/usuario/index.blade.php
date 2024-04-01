@@ -39,7 +39,7 @@
 										<th>Nombre</th>
 										<th>Correoelectronico</th>
 										<th>Telefono</th>
-										<th>Direccion</th>
+									
 
                                         <th></th>
                                     </tr>
@@ -52,7 +52,7 @@
 											<td>{{ $usuario->Nombre }}</td>
 											<td>{{ $usuario->CorreoElectronico }}</td>
 											<td>{{ $usuario->Telefono }}</td>
-											<td>{{ $usuario->Direccion }}</td>
+											
 
                                             <td>
                                                 <form action="{{ route('usuario.destroy',$usuario->id) }}" method="POST">

@@ -20,13 +20,10 @@
 
                     <div class="card-body">
                         
-                        <div class="form-group">
-                            <strong>Codigo:</strong>
-                            {{ $inventario->codigo }}
-                        </div>
+                        
                         <div class="form-group">
                             <strong>Producto:</strong>
-                            {{ $inventario->producto }}
+                            {{ $inventario->producto->titulo }}
                         </div>
                         <div class="form-group">
                             <strong>Existencias:</strong>
@@ -46,4 +43,6 @@
             </div>
         </div>
     </section>
-@endsection
+
+
+    @endsection

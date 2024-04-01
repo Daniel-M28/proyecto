@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
-use App\Models\Usuario; // Importa el modelo Usuario
+use App\Models\Usuario; 
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -27,25 +27,27 @@ class RegisterController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'telefono' => ['required', 'numeric', 'regex:/^\d{10}$/'],
         ]);
     }
 
     protected function create(array $data)
     {
-        // Crear el usuario
-        $user = User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-        ]);
+    // Crear el usuario
+    $user = User::create([
+        'name' => $data['name'],
+        'email' => $data['email'],
+        'password' => Hash::make($data['password']),
+    ]);
 
-        // Agregar lógica para crear un registro en la tabla del CRUD de usuarios
-        Usuario::create([
-            'Nombre' => $data['name'],
-            'CorreoElectronico' => $data['email'],
-            // Agregar otros campos según sea necesario
-        ]);
+    
+    Usuario::create([
+        'Nombre' => $data['name'],
+        'CorreoElectronico' => $data['email'],
+        'Telefono' => $data['telefono'], 
+        
+    ]);
 
-        return $user;
+    return $user;
     }
 }

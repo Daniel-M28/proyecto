@@ -6,11 +6,11 @@
     <!-- Contenido de la página 'inicio' -->
 
     <header>
-        <img src="{{asset ('logo-farmacia.png')}}" class="header1 img1" style="height: 150px; width:200px;margin-left: 300px">
+        <img src="{{asset ('logo-farmacia.png')}}" class="header1 img1" style="height: 150px; width:200px;margin-left: 300px; margin-top:-20px">
            <div  style="margin-left: 500px; margin-top: 250px" class="titulo"> <h1 class="header1" > Bienvenidos - Nuestros servicios </h1> </div>
           
         </header>
-        <div class="contenedor-cards-inicio">
+        <div class="contenedor-cards-inicio" >
         <div class="card-inicio-container">
           <!-- Tarjetas de arriba -->
 

@@ -32,10 +32,7 @@
                             <strong>Telefono:</strong>
                             {{ $usuario->Telefono }}
                         </div>
-                        <div class="form-group">
-                            <strong>Direccion:</strong>
-                            {{ $usuario->Direccion }}
-                        </div>
+                       
 
                     </div>
                 </div>

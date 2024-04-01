@@ -4,6 +4,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PdfController;
+use App\Http\Controllers\CompraController;
+use App\Http\Controllers\TiendaController;
+use App\Http\Controllers\FacturaController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -20,11 +24,7 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
-/* Route::get('/persona', function () {
-    return view('persona.index');
-});
 
-Route::get('persona/create', [PersonaController::class,'create']); */
 Route::get('/login', 'Auth\LoginController@showLoginForm')->name('login');
 
 Route::get('/inicio', function () {
@@ -70,6 +70,22 @@ Route::resource ('inventario', App\Http\Controllers\InventarioController::class)
 
 
 Route::resource ('usuario', App\Http\Controllers\UsuarioController::class)->middleware(['auth','can:usuario.index']);
+
+
+Route::resource('compras', CompraController::class);
+
+
+
+Route::post('/api/inventario/existencias', [InventarioController::class, 'getExistencias']);
+
+Route::post('/inventario/existencias', 'InventarioController@getExistencias');
+
+
+
+
+
+
+Route::post('/enviar-factura', [FacturaController::class, 'enviarFactura']);
 
 
 

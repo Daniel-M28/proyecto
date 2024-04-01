@@ -7,26 +7,15 @@
 @section('content')
     <div class="container-fluid">
         <div class="row">
-        <div class="col-sm-8" style="margin:auto">
-          
-                            <div class="card">
-                                <div class="card-header">
+            <div class="col-sm-8" style="margin:auto">
+                <div class="card">
+                    <div class="card-header">
                         <div style="display: flex; justify-content: space-between; align-items: center;">
-            
-            
-                        <div class="float-right">
-                        <a href="{{ route('inventario.create') }}" class="btn btn-success  float-right"  data-placement="left">
-                            {{ __('Registrar Producto') }}
-                            </a>
-
-                
-
-
-                    
-
-                             
-                            
-                              </div>
+                            <div class="float-right">
+                                <a href="{{ route('inventario.create') }}" class="btn btn-success float-right" data-placement="left">
+                                    {{ __('Registrar Producto') }}
+                                </a>
+                            </div>
                         </div>
                     </div>
                     @if ($message = Session::get('success'))
@@ -41,13 +30,11 @@
                                 <thead class="thead">
                                     <tr>
                                         <th>No</th>
-                                        
-										<th>Codigo</th>
-										<th>Producto</th>
-										<th>Existencias</th>
-										<th>Entradas</th>
-										<th>Salidas</th>
-
+                                      
+                                        <th>Producto</th>
+                                        <th>Existencias</th>
+                                        <th>Entradas</th>
+                                        <th>Salidas</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -55,20 +42,18 @@
                                     @foreach ($inventarios as $inventario)
                                         <tr>
                                             <td>{{ ++$i }}</td>
-                                            
-											<td>{{ $inventario->codigo }}</td>
-											<td>{{ $inventario->producto }}</td>
-											<td>{{ $inventario->existencias }}</td>
-											<td>{{ $inventario->entradas }}</td>
-											<td>{{ $inventario->salidas }}</td>
-
+                                    
+                                            <td>{{ $inventario->producto->titulo }}</td>
+                                            <td>{{ $inventario->existencias }}</td>
+                                            <td>{{ $inventario->entradas }}</td>
+                                            <td>{{ $inventario->salidas }}</td>
                                             <td>
-                                                <form action="{{ route('inventario.destroy',$inventario->id) }}" method="POST">
-                                                    <a class="btn btn-primary " href="{{ route('inventario.show',$inventario->id) }}"><i class="fa fa-fw fa-eye"></i> {{ __('Ver') }}</a>
+                                                <form style="margin-left:150px" action="{{ route('inventario.destroy',$inventario->id) }}" method="POST">
+                                                    <a class="btn btn-primary" href="{{ route('inventario.show',$inventario->id) }}"><i class="fa fa-fw fa-eye"></i> {{ __('Ver') }}</a>
                                                     <a class="btn btn-warning" href="{{ route('inventario.edit',$inventario->id) }}"><i class="fa fa-fw fa-edit"></i> {{ __('Editar') }}</a>
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger onclick="onclick="return confirm ('¿deseas borrar?')"  value="borrar"><i class="fa fa-fw fa-trash"></i> {{ __('Borrar') }}</button>
+                                                    <button type="submit" class="btn btn-danger" onclick="return confirm('¿Deseas borrar?')"><i class="fa fa-fw fa-trash"></i> {{ __('Borrar') }}</button>
                                                 </form>
                                             </td>
                                         </tr>
@@ -82,4 +67,8 @@
             </div>
         </div>
     </div>
+
+    @php
+    $ocultarFooter = true;
+@endphp
 @endsection

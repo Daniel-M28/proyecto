@@ -12,7 +12,7 @@ class AddUserIdToCitas extends Migration
      * @return void
      */
     public function up()
-    { /*
+    { 
         Schema::table('citas', function (Blueprint $table) {
             $table->unsignedBigInteger('user_id');
 
@@ -20,7 +20,7 @@ class AddUserIdToCitas extends Migration
                 ->references('id')
                 ->on('users');
                 
-        });*/
+        });
     }
 
     /**

@@ -43,14 +43,20 @@ class UsuarioController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        request()->validate(Usuario::$rules);
+{
+    $validatedData = $request->validate(Usuario::$rules);
 
-        $usuario = Usuario::create($request->all());
+    $usuario = Usuario::create($validatedData);
 
+    if ($usuario) {
         return redirect()->route('usuario.index')
-            ->with('success', 'Usuario creado con exito.');
+            ->with('success', 'Usuario creado con éxito.');
+    } else {
+        return back()
+            ->withInput()
+            ->with('error', 'Error al crear el usuario.');
     }
+}
 
     /**
      * Display the specified resource.
@@ -93,19 +99,15 @@ class UsuarioController extends Controller
 
 
 
-    public function update(Request $request, Usuario $usuario)
-    {
-          
-          
-
-        request()->validate(Usuario::$rules);
-
-        $usuario->update($request->all());
-
-        return redirect()->route('usuario.index')
-            ->with('success', 'Usuario actualizado con exito');
-    }
-
+     public function update(Request $request, Usuario $usuario)
+     {
+         $validatedData = $request->validate(Usuario::$rules);
+ 
+         $usuario->update($validatedData);
+ 
+         return redirect()->route('usuario.index')
+             ->with('success', 'Usuario actualizado con éxito.');
+     }
 
     
     /**

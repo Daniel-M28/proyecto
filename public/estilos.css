@@ -43,14 +43,15 @@ width: 100%;
 
 
 .contenedor-plantilla{
-  display: flex}
+  display: flex;
+}
 
 .contenido-plantilla{ flex: 1;
  
 }
 
 .barra-lateral{
-min-height: 100%;
+min-height: 80vh;
 flex: 0 0 auto;
 background-color: #007BFF;
 width: 200px;
@@ -85,7 +86,7 @@ color: white;
  .contenido-ventas{display: flex;
     background-color: #f0f0f0;
     margin-top: -30px;
-    height: 620px;
+    height: 540px;
     
     }
     
@@ -339,7 +340,7 @@ margin-left: 40px;}
       display: flex;
       justify-content: center;
       align-items: center;
-      margin: 30px 350px;
+      margin: 8px 350px;
       
   }
   
@@ -376,3 +377,112 @@ margin-left: 40px;}
     
   .contenedor-formulario-citas{margin-left: 250px;}
 
+/* Responsive design
+@media screen and (max-width: 1200px) {
+  .barra-lateral {
+      width: 180px;
+  }
+
+  .titulo-carrito {
+      margin-left: 350px;
+  }
+
+  .productos {
+      grid-template-columns: repeat(3, 1fr);
+      width: 400px;
+  }
+
+  .contenedor-plantilla {
+      flex-direction: column;
+  }
+
+  .contenido-ventas-carrito {
+      width: 950px;
+  }
+
+  .botones-compra-carrito {
+      width: 740px;
+      margin-left: 163px;
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .barra-lateral {
+      width: 160px;
+  }
+
+  .titulo-carrito {
+      margin-left: 250px;
+  }
+
+  .productos {
+      grid-template-columns: repeat(2, 1fr);
+      width: 300px;
+  }
+
+  .contenedor-plantilla {
+      flex-direction: column;
+  }
+
+  .contenido-ventas-carrito {
+      width: 850px;
+  }
+
+  .botones-compra-carrito {
+      width: 640px;
+      margin-left: 143px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .barra-lateral {
+      width: 140px;
+  }
+
+  .titulo-carrito {
+      margin-left: 150px;
+      width: 530px;
+  }
+
+  .productos {
+      grid-template-columns: repeat(1, 1fr);
+      width: 200px;
+  }
+
+  .contenedor-plantilla {
+      flex-direction: column;
+  }
+
+  .contenido-ventas-carrito {
+      width: 750px;
+  }
+
+  .botones-compra-carrito {
+      width: 540px;
+      margin-left: 123px;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .barra-lateral {
+      width: 100%;
+      position: relative;
+      top: auto;
+      left: auto;
+      margin-bottom: 20px;
+      padding: 0;
+  }
+
+  .contenido-ventas-carrito {
+      flex-direction: column;
+      width: auto;
+      margin-left: 0;
+  }
+
+  .botones-compra-carrito {
+      position: static;
+      width: 100%;
+      margin-left: 0;
+  }
+}
+ */

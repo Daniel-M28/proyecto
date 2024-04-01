@@ -110,11 +110,20 @@ El valor estimado del envío aparecerá en la parte inferior del mapa</p>
     var lon = coordinates.lng;
 
     // Realizar una solicitud de geocodificación inversa para obtener la dirección completa
-    fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&addressdetails=1`)
+    fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&addressdetails=1&zoom=18`)
       .then(response => response.json())
       .then(data => {
         var address = data.display_name;
-        userAddressInput.value = address; // Mostrar la dirección en el campo de entrada
+        
+        // Construir la dirección completa con calle y número, manejando los casos en los que no estén disponibles
+        var street = data.address.road ? data.address.road : "";
+        var houseNumber = data.address.house_number ? `#${data.address.house_number}` : "";
+        var fullAddress = `${street} ${houseNumber}, ${data.address.neighbourhood}, ${data.address.suburb}, ${data.address.city}, ${data.address.country}`;
+
+        userAddressInput.value = fullAddress.trim(); // Mostrar la dirección completa en el campo de entrada y eliminar espacios en blanco innecesarios
+
+        // Guardar la dirección en el localStorage
+        localStorage.setItem('userAddress', fullAddress.trim());
 
         // Mostrar el valor del input de dirección en la consola
         console.log(userAddressInput.value);
@@ -222,6 +231,8 @@ userAddressInput.addEventListener('change', function() {
 
 
 
-
+@php
+    $ocultarFooter = true;
+@endphp
 
 @endsection

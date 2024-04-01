@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Permission\Traits\HasRoles;
 
-
 /**
  * Class Usuario
  *
@@ -13,7 +12,6 @@ use Spatie\Permission\Traits\HasRoles;
  * @property $Nombre
  * @property $CorreoElectronico
  * @property $Telefono
- * @property $Direccion
  * @property $created_at
  * @property $updated_at
  *
@@ -22,12 +20,13 @@ use Spatie\Permission\Traits\HasRoles;
  */
 class Usuario extends Model
 {
-  use HasRoles;
-    static $rules = [
-		'Nombre' => 'required',
-		'CorreoElectronico' => 'required',
-		'Telefono' => 'required',
-		'Direccion' => 'required',
+    use HasRoles;
+
+    public static $rules = [
+        'Nombre' => 'required|string|max:255',
+        'CorreoElectronico' => 'required|email|unique:usuarios,CorreoElectronico',
+        'Telefono' => 'required|string|max:10',
+       
     ];
 
     protected $perPage = 20;
@@ -37,8 +36,6 @@ class Usuario extends Model
      *
      * @var array
      */
-    protected $fillable = ['Nombre','CorreoElectronico','Telefono','Direccion'];
-
-
+    protected $fillable = ['Nombre', 'CorreoElectronico', 'Telefono'];
 
 }
