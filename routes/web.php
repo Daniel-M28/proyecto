@@ -85,7 +85,8 @@ Route::post('/inventario/existencias', 'InventarioController@getExistencias');
 
 
 
-Route::post('/enviar-factura', [FacturaController::class, 'enviarFactura']);
+
+
 
 
 

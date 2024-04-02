@@ -172,6 +172,8 @@ let productosEnCarrito = localStorage.getItem("productos-en-carrito");
     html2pdf().from(facturaContainer).save(`factura-${userName}-${idFactura}.pdf`); 
      // Guardar la factura con el nombre del usuario
       
+
+      
 }
 
 

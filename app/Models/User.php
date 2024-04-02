@@ -49,4 +49,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(Pdf::class);
     }
+
+
+public function facturas()
+{
+    return $this->hasMany(Factura::class);
+}
+
+
+
+
 }
