@@ -19,7 +19,7 @@
 <a href="{{ asset('carrito') }}"><button style="margin-left:230px; margin-top:50px " class="btn btn-success">ir a pagar </button> </a>
 
 <p style=" margin-left: 400px; color: #48e;margin-top: -50px">Envio</p> <br> <p style="margin-left: 400px; margin-top: -30px">Ingresa tu dirección o seleccionala en el mapa <br>
-cada kilometro desde la tienda tiene un valor de $3000 <br>
+cada kilometro desde la tienda tiene un valor de $2000 <br>
 El valor estimado del envío aparecerá en la parte inferior del mapa</p>
 
 <div id="map"></div>
@@ -46,7 +46,7 @@ El valor estimado del envío aparecerá en la parte inferior del mapa</p>
   var infoTextarea = document.getElementById('info');
   var userAddressInput = document.getElementById('userAddress');
 
-  // Verificar si hay una ubicación guardada en el almacenamiento local al cargar la página
+ 
   window.onload = function() {
     var savedLocation = localStorage.getItem('userLocation');
     if (savedLocation) {
@@ -58,7 +58,7 @@ El valor estimado del envío aparecerá en la parte inferior del mapa</p>
   };
 
   mymap.on('click', function(e) {
-    // Eliminar marcador existente del usuario si hay uno
+   
     if (userMarker) {
       mymap.removeLayer(userMarker);
     }
@@ -74,10 +74,10 @@ El valor estimado del envío aparecerá en la parte inferior del mapa</p>
   });
 
   userAddressInput.addEventListener('change', function() {
-    // Obtener la dirección ingresada por el usuario
+    
     var address = userAddressInput.value;
 
-    // Realizar una solicitud de geocodificación para obtener las coordenadas de la dirección ingresada
+    
     fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${address}`)
       .then(response => response.json())
       .then(data => {
@@ -109,18 +109,18 @@ El valor estimado del envío aparecerá en la parte inferior del mapa</p>
     var lat = coordinates.lat;
     var lon = coordinates.lng;
 
-    // Realizar una solicitud de geocodificación inversa para obtener la dirección completa
+    
     fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&addressdetails=1&zoom=18`)
       .then(response => response.json())
       .then(data => {
         var address = data.display_name;
         
-        // Construir la dirección completa con calle y número, manejando los casos en los que no estén disponibles
+      
         var street = data.address.road ? data.address.road : "";
         var houseNumber = data.address.house_number ? `#${data.address.house_number}` : "";
         var fullAddress = `${street} ${houseNumber}, ${data.address.neighbourhood}, ${data.address.suburb}, ${data.address.city}, ${data.address.country}`;
 
-        userAddressInput.value = fullAddress.trim(); // Mostrar la dirección completa en el campo de entrada y eliminar espacios en blanco innecesarios
+        userAddressInput.value = fullAddress.trim(); 
 
         // Guardar la dirección en el localStorage
         localStorage.setItem('userAddress', fullAddress.trim());
@@ -145,9 +145,9 @@ window.onload = function() {
     }
 };
 
-// Llamar a calculateDistanceAndCost cuando el mapa se carga
+
 mymap.on('click', function(e) {
-    // Eliminar marcador existente del usuario si hay uno
+   
     if (userMarker) {
       mymap.removeLayer(userMarker);
     }
@@ -162,7 +162,7 @@ mymap.on('click', function(e) {
     localStorage.setItem('userLocation', JSON.stringify(userLocation));
 });
 
-// Llamar a getAddressFromCoordinates cuando el usuario cambia la dirección
+
 userAddressInput.addEventListener('change', function() {
     // Obtener la dirección ingresada por el usuario
     var address = userAddressInput.value;
@@ -196,7 +196,7 @@ userAddressInput.addEventListener('change', function() {
 });
   
   function calculateDistanceAndCost() {
-    if (!userMarker) return; // Salir si no hay marcador de usuario
+    if (!userMarker) return; 
 
     var distance = storeMarker.getLatLng().distanceTo(userMarker.getLatLng()) / 1000; // Distancia en kilómetros
     var cost = distance * 2000; // Costo en pesos (2000 pesos por kilómetro)
