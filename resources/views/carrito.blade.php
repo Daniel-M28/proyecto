@@ -6,6 +6,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tu Título Aquí</title>
@@ -86,15 +87,17 @@ let productosEnCarrito = localStorage.getItem("productos-en-carrito");
     let botonesEliminar = document.querySelectorAll(".eliminar-producto-carrito");
     const botonVaciar = document.querySelector("#vaciar-carrito");
     const total = document.querySelector("#precio-total");
+    const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-    function generarFactura(productosEnCarrito, userName) {
+    function generarFactura(productosEnCarrito, userName, shippingCost) {
     const idFactura = new Date().getTime();
     const fechaActual = new Date();
-    const fechaFormateada = `${fechaActual.getDate()}/${fechaActual.getMonth() + 1}/${fechaActual.getFullYear()} ${fechaActual.getHours()}:${fechaActual.getMinutes()}`;
-
-
+    const fechaFormateada = `${fechaActual.getFullYear()}-${String(fechaActual.getMonth() + 1).padStart(2, '0')}-${String(fechaActual.getDate()).padStart(2, '0')} ${String(fechaActual.getHours()).padStart(2, '0')}:${String(fechaActual.getMinutes()).padStart(2, '0')}`;
+    
     const userAddress = localStorage.getItem('userAddress') || 'Dirección no especificada';
-
+    
+    let total = 0;
+    
     let facturaHTML = `
         <div style='font-family: Arial, sans-serif; width: 100%; border: 1px solid #aaa;padding:20px;'>
             <div style='text-align:center; padding: 10px 0;'>
@@ -122,10 +125,7 @@ let productosEnCarrito = localStorage.getItem("productos-en-carrito");
                     </thead>
                     <tbody>
     `;
-
-    let total = 0;
-    let shippingCostAdded = false;
-
+    
     productosEnCarrito.forEach((producto, index) => {
         facturaHTML += `
             <tr>
@@ -135,21 +135,19 @@ let productosEnCarrito = localStorage.getItem("productos-en-carrito");
                 <td style='border-bottom: 1px solid #ccc; padding: 8px;'>$${producto.precio * producto.cantidad}</td>
             </tr>
         `;
-
+        
         total += producto.precio * producto.cantidad;
-
-        if (index === productosEnCarrito.length - 1 && !shippingCostAdded) {
-            facturaHTML += `
-                <tr>
-                    <td colspan='3' style='text-align: right; padding: 8px;'><strong>Envío:</strong></td>
-                    <td style='border-bottom: 1><td style='border-bottom: 1px solid #ccc; padding: 8px;'>$${shippingCost}</td>
-                </tr>
-            `;
-            total += parseInt(shippingCost);
-            shippingCostAdded = true;
-        }
     });
 
+    // Agregar costo de envío
+    total += parseInt(shippingCost);
+    facturaHTML += `
+            <tr>
+                <td colspan='3' style='text-align: right; padding: 8px;'><strong>Envío:</strong></td>
+                <td style='border-bottom: 1px solid #ccc; padding: 8px;'>$${shippingCost}</td>
+            </tr>
+    `;
+    
     facturaHTML += `
                     </tbody>
                 </table>
@@ -163,39 +161,57 @@ let productosEnCarrito = localStorage.getItem("productos-en-carrito");
             </div>
         </div>
     `;
+    
+    const facturaData = {
+        id_factura: idFactura.toString(),
+        fecha: fechaFormateada,
+        cliente: userName,
+        direccion_envio: userAddress,
+        productos: JSON.stringify(productosEnCarrito),
+        envio: shippingCost.toString(),
+        total: total.toString()
+    };
 
-    // Mostrar la factura dentro del contenedor de la factura
+   
+fetch('http://localhost/proyecto-final/public/facturas', { 
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-TOKEN': token
+    },
+    body: JSON.stringify(facturaData)
+})
+.then(response => response.json())
+.then(data => {
+    console.log(data);
+})
+.catch(error => {
+    console.error('Error:', error);
+});
+
     const facturaContainer = document.querySelector(".factura-container");
     facturaContainer.innerHTML = facturaHTML;
 
     // Genera el PDF usando html2pdf
-    html2pdf().from(facturaContainer).save(`factura-${userName}-${idFactura}.pdf`); 
-     // Guardar la factura con el nombre del usuario
-      
-
-      
+    const element = document.createElement('div');
+    element.innerHTML = facturaHTML;
+    html2pdf().from(element).save(`factura-${userName}-${idFactura}.pdf`);
 }
 
-
-
-
-
-    const botonComprar = document.querySelector("#boton-comprar-carrito");
-
-    const userName = "{{ Auth::user()->name }}";  
+const botonComprar = document.querySelector("#boton-comprar-carrito");
 
 botonComprar.addEventListener("click", () => {
-
+    const userName = "{{ Auth::user()->name }}";  
+    const shippingCost = localStorage.getItem('shippingCost');
     
-    const userAddress = localStorage.getItem('userAddress');
-
-
-    generarFactura(productosEnCarrito, userName);  
+    generarFactura(productosEnCarrito, userName, shippingCost);
+    
+   
     productosEnCarrito.length = 0;
     localStorage.setItem("productos-en-carrito", JSON.stringify(productosEnCarrito));
+    
     cargarProductosCarrito();
 });
-
 
 
 function cargarProductosCarrito(){
@@ -322,7 +338,8 @@ var shippingCost = localStorage.getItem('shippingCost');
 
 
 
-
+    </body>
+    </html>
 
 
 

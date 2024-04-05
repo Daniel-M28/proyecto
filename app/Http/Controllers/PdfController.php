@@ -83,14 +83,17 @@ class PdfController extends Controller
     $filepath = storage_path("app/pdfs/{$filename}");
 
     if (file_exists($filepath)) {
-        return response()->file($filepath);
-    } else {
-       
-        error_log("El archivo PDF '{$filename}' no se encontró en la ubicación '{$filepath}'.");
+        $headers = [
+            'Content-Type' => 'application/pdf',
+        ];
 
+        return response()->download($filepath, $filename, $headers);
+    } else {
+        error_log("El archivo PDF '{$filename}' no se encontró en la ubicación '{$filepath}'.");
         
         return response()->json(['error' => 'Archivo no encontrado'], 404);
     }
 }
+
 
 }

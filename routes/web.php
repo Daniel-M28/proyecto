@@ -60,6 +60,7 @@ Route::post('/cargar-pdf', [PdfController::class, 'uploadPdf'])-> middleware('au
 Route::get('/descargar-pdf/{filename}', [PdfController::class, 'downloadPdf'])-> middleware('auth');
 Route::get('/ver-pdf/{filename}', [PdfController::class, 'viewPdf'])-> middleware('auth');
 Route::get('/eliminar-pdf/{filename}', [PdfController::class, 'deletePdf'])-> middleware('auth');
+Route::get('/descargar-pdf/{filename}', [PdfController::class, 'viewPdf'])->middleware('auth');
 
 
 
@@ -81,7 +82,8 @@ Route::post('/api/inventario/existencias', [InventarioController::class, 'getExi
 Route::post('/inventario/existencias', 'InventarioController@getExistencias');
 
 
-
+Route::get('/facturas', [FacturaController::class, 'index']);
+Route::post('/facturas', [FacturaController::class, 'store']);
 
 
 
