@@ -21,22 +21,21 @@ class CitaController extends Controller
      */
     public function index()
     {
-       // Obtener el usuario autenticado
-       $user = Auth::user();
-
-       // Verificar el rol del usuario
-       if ($user->hasRole('admin')) {
-     // Si es administrador, mostrar todas las citas
-           $citas = Cita::paginate();
-       } else {
-        // Si es usuario, mostrar solo sus propias citas
-           $citas = Cita::where('user_id', $user->id)->paginate();
-       }
-
-       return view('cita.index', compact('citas'))
-           ->with('i', (request()->input('page', 1) - 1) * $citas->perPage());
+        // Obtener el usuario autenticado
+        $user = Auth::user();
+    
+        // Verificar el rol del usuario
+        if ($user->hasRole('admin')) {
+            // Si es administrador, mostrar todas las citas
+            $citas = Cita::paginate();
+        } else {
+            // Si es usuario, mostrar solo sus propias citas
+            $citas = Cita::where('user_id', $user->id)->paginate();
+        }
+    
+        return view('cita.index', compact('citas'))
+            ->with('i', (request()->input('page', 1) - 1) * $citas->perPage());
     }
-
     /**
      * Show the form for creating a new resource.
      *

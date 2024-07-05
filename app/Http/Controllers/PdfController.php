@@ -79,21 +79,21 @@ class PdfController extends Controller
     }
 
     public function viewPdf($filename)
-{
-    $filepath = storage_path("app/pdfs/{$filename}");
+    {
+        $filepath = storage_path("app/pdfs/{$filename}");
 
-    if (file_exists($filepath)) {
-        $headers = [
-            'Content-Type' => 'application/pdf',
-        ];
+        if (file_exists($filepath)) {
+            $headers = [
+                'Content-Type' => 'application/pdf',
+            ];
 
-        return response()->download($filepath, $filename, $headers);
-    } else {
-        error_log("El archivo PDF '{$filename}' no se encontró en la ubicación '{$filepath}'.");
-        
-        return response()->json(['error' => 'Archivo no encontrado'], 404);
+            // return the PDF as a response, not as a download
+            return response()->file($filepath, $headers);
+        } else {
+            error_log("El archivo PDF '{$filename}' no se encontró en la ubicación '{$filepath}'.");
+            
+            return response()->json(['error' => 'Archivo no encontrado'], 404);
+        }
     }
-}
-
 
 }

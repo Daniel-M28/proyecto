@@ -7,6 +7,9 @@ use App\Http\Controllers\PdfController;
 use App\Http\Controllers\CompraController;
 use App\Http\Controllers\TiendaController;
 use App\Http\Controllers\FacturaController;
+use App\Http\Controllers\InventarioController;
+use App\Http\Controllers\VentasController;
+
 
 
 /*
@@ -81,9 +84,14 @@ Route::post('/api/inventario/existencias', [InventarioController::class, 'getExi
 
 Route::post('/inventario/existencias', 'InventarioController@getExistencias');
 
+Route::post('/reducir-inventario', [InventarioController::class, 'reducirInventario']);
 
-Route::get('/facturas', [FacturaController::class, 'index']);
+
+
+Route::get('/facturas', [FacturaController::class, 'index'])->name('facturas.index')->middleware('auth');
 Route::post('/facturas', [FacturaController::class, 'store']);
+
+Route::post('/comprar', [VentasController::class, 'realizarCompra'])->name('comprar');
 
 
 

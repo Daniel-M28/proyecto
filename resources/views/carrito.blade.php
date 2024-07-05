@@ -198,6 +198,7 @@ fetch('http://localhost/proyecto-final/public/facturas', {
     html2pdf().from(element).save(`factura-${userName}-${idFactura}.pdf`);
 }
 
+
 const botonComprar = document.querySelector("#boton-comprar-carrito");
 
 botonComprar.addEventListener("click", () => {
@@ -212,6 +213,7 @@ botonComprar.addEventListener("click", () => {
     
     cargarProductosCarrito();
 });
+
 
 
 function cargarProductosCarrito(){

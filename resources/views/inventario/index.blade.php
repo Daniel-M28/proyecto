@@ -44,7 +44,7 @@
                                             <td>{{ ++$i }}</td>
                                     
                                             <td>{{ $inventario->producto->titulo }}</td>
-                                            <td>{{ $inventario->existencias }}</td>
+                                            <td>{{ $inventario->producto->existencias }}</td>
                                             <td>{{ $inventario->entradas }}</td>
                                             <td>{{ $inventario->salidas }}</td>
                                             <td>

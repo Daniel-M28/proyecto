@@ -60,15 +60,18 @@
                      <li class="nav-item" style="display:flex; padding-left: 60px; ">
 
                      
-                     <a class="nav-link" style="margin-right:20px " href="{{ route('inicio') }}">{{ __('inicio') }}</a>
-                     @can ('inventario.index')
-                     <a class="nav-link" style="margin-right:20px " href="{{ route('usuario.index') }}">{{ __('usuarios') }}</a>
+                     <a class="nav-link" style="margin-right:20px; color:white" href="{{ route('inicio') }}">{{ __('inicio') }}</a>
+                     @can ('usuario.index')
+                     <a class="nav-link" style="margin-right:20px;color:white " href="{{ route('usuario.index') }}">{{ __('usuarios') }}</a>
                      @endcan
                    
                       @can ('inventario.index')
-                     <a class="nav-link " style="margin-right:580px " href="{{ route('inventario.index') }}">{{ __('inventario') }}</a>
+                     <a class="nav-link " style="margin-right:570px;color:white " href="{{ route('inventario.index') }}">{{ __('inventario') }}</a>
                       @endcan
-                     
+
+                      @can ('inventario.index')
+                      <a class="nav-link " style="margin-left:-560px;color:white " href="{{ route('facturas.index') }}">{{ __('facturas') }}</a>
+                      @endcan
                      
                     </li>
 

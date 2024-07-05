@@ -114,4 +114,19 @@ class InventarioController extends Controller
 }
 
 
+public function reducirInventario(Request $request)
+    {
+        $productos = $request->input('productos', []);
+
+        foreach ($productos as $producto) {
+            $productoModel = Producto::find($producto['id']);
+            if ($productoModel) {
+                $productoModel->existencias -= $producto['cantidad'];
+                $productoModel->save();
+            }
+        }
+
+        return response()->json(['message' => 'Inventario actualizado con éxito']);
+    }
+
 }

@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container" style="margin-left: 200px">
-        <h1>Listado de Facturas</h1>
+        <h1 style="color: #48e; font-size:28px">Listado de Facturas</h1>
         <table class="table">
             <thead>
                 <tr>

@@ -13,19 +13,19 @@
 
 1.Ingresa a la opcion tienda en la pantalla principal o el menu lateral izquierdo<br>
 
-2.Busca el producto que quieres comprar. Puedes hacerlo navegando a través de las categorías .<br>
+2.Busca el producto que quieres comprar, puedes hacerlo navegando a través de las categorías .<br>
 
 3.Una vez encuentres el producto, asegúrate de elegir la cantidad que necesitas y agrégalo a tu carrito de compras.<br>
 
 4.Puedes seguir navegando y agregar al carrito los productos que desees. Cuando hayas incluido todo y tu compra esté lista, <br> ve al carrito de compras en el boton verde que está en la parte superior izquierda de la pantalla. .<br>
 
-5.Estando en el carrito de compras, ingresa en el botón envío para seleccionar la dirección donde deseas recibir tu compra.
+5.Estando en el carrito de compras, ingresa en el botón envío para seleccionar la dirección donde deseas recibir tu compra.<br>
 
 6.Una vez selecionados los productos y la dirección de envío, haz clic en comprar ahora.<br>
 
-7.Tu factura aparecerá en pantalla y se desacargará automaticamente <br>
+7.Tu factura aparecerá en pantalla y se descargará automaticamente <br>
 
-8.Envía tu factura a nuestro correo o numero de whatsapp</p>
+</p>
 
 
 <p style="color:#48e">2.¿Cómo agendar tu cita médica? </p> 

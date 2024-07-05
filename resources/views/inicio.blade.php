@@ -29,27 +29,38 @@
            
           
           <!-- Tarjetas de abajo -->
-          <a href="{{ route('preguntas')}}">
+          @can ('inventario.index')
+          <a href="{{ route('inventario.index')}}" >
           <button class="card-inicio">
-              <h2 class="titulo-card-inicio">Preguntas frecuentes</h2>
-              <p>Resuelve tus dudas</p>
+              <h2 class="titulo-card-inicio">Inventario</h2>
+              <p>Administradores</p>
               </button></a>
-
-          
-
+              @endcan
+        
               <a href="{{ route('certificados')}}" >
           <button class="card-inicio">
               <h2 class="titulo-card-inicio">Certificados medicos</h2>
               <p>Consulta tus resultados</p>
               </button></a>
 
-              <a href="{{ route('inventario.index')}}" >
+
+              <a href="{{ route('preguntas')}}">
           <button class="card-inicio">
-              <h2 class="titulo-card-inicio">Inventario/admin</h2>
+              <h2 class="titulo-card-inicio">Preguntas frecuentes</h2>
+              <p>Resuelve tus dudas</p>
+              </button></a>
+            
+              @can ('inventario.index')
+              <a href="{{ route('facturas.index')}}" >
+          <button class="card-inicio">
+              <h2 class="titulo-card-inicio">Facturas</h2>
               <p>Administradores</p>
               </button></a>
+              @endcan
       </div>
 </div>
+
+
 
 
 

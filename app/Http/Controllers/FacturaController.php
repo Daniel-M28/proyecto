@@ -41,15 +41,13 @@ class FacturaController extends Controller
 }
 
 private function generarFacturaHTML($data) {
-    // Aquí tu lógica para generar el HTML de la factura
+  
     $facturaHTML = "<html><head><title>Factura</title></head><body>";
     $facturaHTML .= "<h1>Factura</h1>";
     $facturaHTML .= "<p>ID Factura: " . $factura->id_factura . "</p>";
     $facturaHTML .= "<p>Fecha: " . $factura->fecha . "</p>";
     $facturaHTML .= "<p>Cliente: " . $factura->cliente . "</p>";
     $facturaHTML .= "<p>Dirección de envío: " . $factura->direccion_envio . "</p>";
-
-    // Detalles de productos
     $facturaHTML .= "<h2>Productos</h2>";
     $facturaHTML .= "<ul>";
     foreach($productos as $producto) {
